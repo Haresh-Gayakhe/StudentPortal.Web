@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StudentPortal.Web.Data;
 using StudentPortal.Web.Models;
 using StudentPortal.Web.Models.Entities;
@@ -45,6 +46,16 @@ namespace StudentPortal.Web.Controllers
 
 
             return View();
+        }
+
+
+        // get method to get list of students
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var students = await dbContext.Students.ToListAsync();
+
+            return View(students);
         }
     }
 }
