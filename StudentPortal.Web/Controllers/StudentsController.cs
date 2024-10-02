@@ -57,5 +57,34 @@ namespace StudentPortal.Web.Controllers
 
             return View(students);
         }
+
+        // get method to go edit page
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var student = await dbContext.Students.FindAsync(id);
+
+
+            return View(student);
+        }
+
+
+        // post method to update and save data in DB
+        [HttpPost]
+        public async Task<IActionResult> Edit(Student viewModel)
+        {
+            var student = await dbContext.Students.FindAsync(viewModel.Id);
+            if (student is not null)
+            {
+                student.Name = viewModel.Name;
+                student.Email = viewModel.Email;
+                student.Phone = viewModel.Phone;
+                student.Subscribed = viewModel.Subscribed;
+
+                await dbContext.SaveChangesAsync();
+            }
+
+            return RedirectToAction("List", "Students");
+        }
     }
 }
